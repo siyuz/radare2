@@ -702,6 +702,7 @@ R_API int r_io_write(RIO *io, const ut8 *buf, int len) {
 			goto cleanup;
 		}
 		if (ret > 0) {
+            // this should never be happen?
 			len -= ret;
 			buf += ret;
 		}
@@ -782,7 +783,7 @@ cleanup:
 }
 
 R_API int r_io_write_at(RIO *io, ut64 addr, const ut8 *buf, int len) {
-	if (io->cached) {
+	if (io->cached && io->cached != 2) {
 		return r_io_cache_write (io, addr, buf, len);
 	}
 	(void)r_io_seek (io, addr, R_IO_SEEK_SET);
